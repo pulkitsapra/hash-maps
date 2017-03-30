@@ -13,7 +13,7 @@
 #include <iostream>
 #define SIZE_DEFAULT 503
 
-int b=0;
+using namespace std;
 
 namespace cs202
 {
@@ -23,16 +23,18 @@ class OpenMap : public Dictionary<Key, Value>
    
 private:
     LinearList< Node<Key, Value> > _list;
+    LinearList<int> status; 
     int size;
     int capacity;
-    LinearList<int> status;                          
+                           
 
     /*
      * Function rehash:
      * Resizes the has table to the next convenient size.
      * Called when all the slots are full and a new element needs to be inserted.
      */
-	void rehash();
+
+
 public:
     /*
      * Constructor: OpenMap
@@ -83,6 +85,52 @@ public:
      * ht[1] = 4;
      * ht[2] = 3;
      */
+    void rehash()
+    {
+        LinearList< Node<Key, Value> > temp = _list;
+        LinearList<int> temp_status = status;
+        int cap = _list.maxSize();
+
+        Node<Key, Value> temp_node;
+
+        size =0;
+        int a =1;
+        capacity = 2*cap;
+
+        _list.set_capacity(capacity);
+        
+        status.set_capacity(capacity);
+   
+
+        for(int i=0;i<temp.maxSize();++i)
+        {
+            int key = temp[i].get_key();
+            int val = temp[i].get_value();
+
+            temp_node.set_pair(key,val);
+
+            int index = this->hash(key,capacity);
+  
+            while(status[index] == 1) 
+            {
+              if(_list[index].get_key() == key) 
+               {
+                    _list[index].set_pair(key, val);
+                    return;
+               }
+               
+               index++;
+               index %= capacity;
+            }
+
+            _list.insert(temp_node, index);
+             status.insert(a, index);
+            size++;
+         
+        }   
+       
+    }
+
    int get_index(const Key& key){
         
         int index = this->hash(key,capacity);
@@ -92,7 +140,7 @@ public:
                 return index;
 
             index++;
-            index = index%SIZE_DEFAULT;
+            index = index%capacity;
         }
 
         return -1;
@@ -119,7 +167,7 @@ public:
                 }
             }
             index++;
-            index %= SIZE_DEFAULT;
+            index %= capacity;
         }
 
         status[index] = 1;
@@ -148,7 +196,7 @@ public:
                 return true;
 
             index++;
-            index = index%SIZE_DEFAULT;
+            index = index%capacity;
         }
 
         return false;
@@ -168,7 +216,7 @@ public:
                 }
 
             index++;
-            index = index%SIZE_DEFAULT;    
+            index = index % capacity;    
 
          }
        }
@@ -188,33 +236,39 @@ public:
                 }
             }
             index++;
-            index %= SIZE_DEFAULT;
+            index %= capacity ;
         }
         return Value();
     }
      
-////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
      void put(const Key& key, const Value& value) 
      {
         int index = this -> hash(key,capacity);
         Node<Key, Value> new_node;
         new_node.set_pair(key,value);
-       
-        while(status[index] == 1) {
-            if(_list[index].get_key() == key) {
-                _list[index].set_pair(key, value);
-                return;
-            }
-            index++;
-            index %= SIZE_DEFAULT;
-        }
+
+         // if(size == capacity)                                 //comment while running lru
+         //     this->rehash();
         
+         
+         while(status[index] == 1) {
+             if(_list[index].get_key() == key) {
+                    _list[index].set_pair(key, value);
+                    return;
+               }
+               index++;
+               index %= capacity;
+            }
+         
         _list.insert(new_node, index);
         int a=1;
         status.insert(a, index);
         size++;
      
-      }
+      
+
+     } 
 
    };
 }

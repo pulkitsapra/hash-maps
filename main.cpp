@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include "seqLinearList.hpp"
 #include <iostream>
 #include <exception>
 #include <limits>
@@ -34,7 +35,7 @@ int main(int argc, char const *argv[])
 	cout<<A.get_capacity();
 
 	int counter[n];
-	bool flag[n];                                                  //1: element present   0: element not present
+	bool flag[n]; //..............................................> //1: element present   0: element not present
 	
 	for (int i = 0; i < n; ++i)                                    //Initializing count of all elements in main memory to  0
 	{

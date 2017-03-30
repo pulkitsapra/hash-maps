@@ -10,7 +10,7 @@ using namespace cs202;
 
 int main()
 {
-	OpenMap<int,int> ht;
+	OpenMap<int,int> ht(3);
 	
 	// ht.put(7,98);
 	// ht.put(2,56);
@@ -35,7 +35,8 @@ int main()
 		cout<<"4: Check availability of a key"<<endl;
 		cout<<"5: Size of hash map"<<endl;
 		cout<<"6: Print hash table"<<endl;
-        cout<<"7: Exit"<<endl;
+        cout<<"7: Check capacity"<<endl;
+        cout<<"8: Exit"<<endl;
    
         int choice,key,value;
         
@@ -73,7 +74,10 @@ int main()
             case 6: ht.print();
                     break;
 
-        	case 7: exit(0);
+        	case 7: cout<<ht.get_capacity()<<endl;
+                    break;
+
+            case 8: exit(0);
 
 
         	default: cout<<"\nWrong input! Enter again."<<endl;  

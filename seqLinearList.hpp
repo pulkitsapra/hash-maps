@@ -127,6 +127,16 @@ class LinearList{
 				
 		}
 
+		/*
+		 *  Resizing the list
+		 */ 
+		LinearList resize(LinearList old)
+		{
+			LinearList<int>L;
+			L.set_capacity(2*old.length());
+
+		}
+
 		/* Insert x after k-th element.
 		 * */
 		void insert( Item& x,const int  k)

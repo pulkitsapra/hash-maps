@@ -7,10 +7,14 @@
 #include "Dictionary.hpp"
 
 using namespace std;
+using namespace cs202;
 
 int find_max(int *array, int size){
 	int max = 0;
-	for(int i = 0; i < size; ++i){
+	for(int i=0;i<size;++i)
+		cout<<array[i]<<" "5
+	;
+	for(int i = 1; i < size; ++i){
 		if(array[max] < array[i]){
 			max = i;
 		}
@@ -31,7 +35,7 @@ int main(int argc, char const *argv[])
 	cout<<"Enter the number of memory blocks in the cache memory : ";
 	cin>>n;
 
-	cs202::OpenMap<int,int> A(n);
+	OpenMap<int,int> A(n);
 	cout<<A.get_capacity();
 
 	int counter[n];
@@ -58,7 +62,9 @@ int main(int argc, char const *argv[])
 				
 		if(A.get_size()==n)
 		{
+			cout<<"Cache limit exceeded\n";
 			int max_key = find_max(counter,n);
+			cout<<max_key<<endl;
 			A.remove(max_key);
 			A.print();
 			counter[max_key]=0;

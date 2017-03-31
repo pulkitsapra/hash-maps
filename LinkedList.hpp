@@ -14,6 +14,8 @@
 
 #include <iostream>
 
+using namespace std;
+
 namespace cs202
 {
   template<class T>

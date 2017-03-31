@@ -3,75 +3,75 @@
 #include "LinkedList.hpp"
 #include "Dictionary.hpp"
 #include "ChainedMap.hpp"
-#include <cmath>
+#include "LinkedList.hpp"
 #include <limits>
 #include <exception>
 
 using namespace std;
 
-int main(int argc, char const *argv[])
+int main()
 {
 
 	int no;
-    std::cout<<"Enter the size of the dictionary : ";
-    std::cin>>no;
+  //  cout<<"Enter the size of the dictionary : ";
+  //  cin>>no;
     cs202::ChainedMap<int,int> A;
-   	// if(A.capacity() != no){
-   	// 	cout<<"The size of the table has been changed to "<<A.capacity()<<" for better efficiency"<<endl;
-   	// }
-    int key, value;
+   	int key, value;
     int choice;
 
     while (1)
     {
-        std::cout<<"\n----------------------"<<std::endl;
-        std::cout<<"Operations on Hash Table"<<std::endl;
-        std::cout<<"\n----------------------"<<std::endl;
-        std::cout<<"1.Insert element into the table"<<std::endl;
-        std::cout<<"2.Search element from the key"<<std::endl;
-        std::cout<<"3.Delete element of a key"<<std::endl;
-        std::cout<<"4.Print the table"<<std::endl;
-        std::cout<<"5.Current length of the table"<<std::endl;
-        std::cout<<"6.Exit"<<std::endl;
-        std::cout<<"Enter your choice: ";
-        std::cin>>choice;
+        cout<<"Enter your choice: "<<endl;
+        cout<<"----------------------"<<endl;
+        cout<<"1.Insert element into the table"<<endl;
+        cout<<"2.Search element from the key"<<endl;
+        cout<<"3.Delete element of a key"<<endl;
+        cout<<"4.Print the table"<<endl;
+        cout<<"5.Current length of the table"<<endl;
+        cout<<"6.Exit"<<endl;
+        
+        cin>>choice;
         switch(choice)
         {
-        	case 1:
-            	std::cout<<"Enter element to be inserted: ";
-	            std::cin>>value;
-    	        std::cout<<"Enter key at which element to be inserted";
-        	    std::cin>>key;
-            	A.put(key,value);
-            	break;
-        	case 2:
-            	std::cout<<"Enter key of the element to be searched: ";
-		        std::cin>>key;
-        	    std::cout<<"Element at key "<<key<<" : ";
-            	try{
-            		value = A.get(key);
-            	}
-            	catch(int error){
-            		cout<<"there is no element on such key"<<endl;
-            	}
-            	cout<<value<<endl;
-            	break;
-		    case 3:
-	            std::cout<<"Enter key of the element to be deleted: ";
-    	        std::cin>>key;
-        	    A.remove(key);
-            	break;
-        	case 4:
-        		//A.print();
-        		break;
-        	case 5:
-        		cout<<"The current length of the table : "<<A.get_size()<<endl;
-        		break;
-        	case 6:
-        		exit(1);
-        	default:
-           		std::cout<<"\nEnter correct option\n";
-       }
+        	case 1:    {cout<<"Enter element to be inserted: ";
+	                   cin>>value;
+    	               cout<<"Enter key at which element to be inserted";
+        	           cin>>key;
+            	       A.put(key,value);
+            	       break;}
+                      
+            case 2:    {cout<<"Enter key of the element to be searched: ";
+            	       cin>>key;
+                	   cout<<"Element at key "<<key<<" : ";
+                       try
+                    	 {value = A.get(key);}
+                    	
+                    	catch(int error)
+                    	 {cout<<"there is no element on such key"<<endl;}
+                    	
+                    	cout<<value<<endl;
+                    	break;}
+		        	   
+
+            case 3:    {cout<<"Enter key of the element to be deleted: ";
+        	           cin>>key;
+            	       A.remove(key);
+                       break;}
+        	
+
+        	case 4:    {A.print();
+        		       break;}
+        	
+            case 5:    {cout<<"The current length of the table : "<<A.get_size()<<endl;
+        		       break;}
+        	
+            case 6:   { exit(0);
+                       break;}
+         
+        }
     }
+     
+
 	return 0;
 }
+

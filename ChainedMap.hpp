@@ -8,8 +8,10 @@
 #define SIZE 503
 #include "LinkedList.hpp"
 #include "Dictionary.hpp"
+#include <iostream>
 #include <string>
 #include <sstream>
+
 using namespace std;
 
 namespace cs202
@@ -26,6 +28,7 @@ namespace cs202
     private:
         LinkedList< Node<Key, Value> > *_list;
         int _size;
+        int capacity;
 
     public:
         void put(const Key& key, const Value& value);
@@ -33,6 +36,7 @@ namespace cs202
         void remove(const Key& key);
         bool has(const Key& key);
         int get_size();
+        void print();
         /*
          * Constructor: ChainedMap
          * Creates a Chained Hash Table with some default size.
@@ -72,6 +76,7 @@ namespace cs202
     ChainedMap<Key, Value>::ChainedMap() {
         _list = new LinkedList< Node<Key, Value> >[SIZE];
         _size = 0;
+        capacity = SIZE;
     }
 
     template<class Key, class Value>
@@ -146,6 +151,20 @@ namespace cs202
         return _size;
     }
 
-}
+    
+    template<class Key, class Value>
+    void ChainedMap<Key, Value>::print()
+    {
+        Node_linkedList<Node<Key,Value> > *temp;
+        for(int i=0 ; i<SIZE ; ++i)
+        {
+           temp = _list[i].get_head();
+           while(temp!=NULL)
+                {cout<<"("<<i<<","<<(temp->data()).get_key()<<","<<(temp->data()).get_value()<<")-->"; temp = temp->link();}
+           cout<<endl;
+        }
+
+    }
+ }   
 
 #endif /* CHAINEDMAP_HPP_ */

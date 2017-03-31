@@ -6,6 +6,7 @@
 #include "LinkedList.hpp"
 #include <limits>
 #include <exception>
+#include <string>
 
 using namespace std;
 
@@ -15,8 +16,8 @@ int main()
 	int no;
   //  cout<<"Enter the size of the dictionary : ";
   //  cin>>no;
-    cs202::ChainedMap<int,int> A;
-   	int key, value;
+    cs202::ChainedMap <int,int> A;
+   	int   key, value;
     int choice;
 
     while (1)

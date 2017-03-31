@@ -5,7 +5,7 @@
 
 #ifndef CHAINEDMAP_HPP_
 #define CHAINEDMAP_HPP_
-#define SIZE 503
+#define SIZE 5
 #include "LinkedList.hpp"
 #include "Dictionary.hpp"
 #include <iostream>
@@ -24,11 +24,47 @@ namespace cs202
          * Resizes the hash table to the next convenient size.
          * Called when all the slots are full and a new element needs to be inserted.
          */
-    	void rehash();
+    	
     private:
         LinkedList< Node<Key, Value> > *_list;
         int _size;
         int capacity;
+
+        void rehash()
+        {
+            // cout<<"Hash table rehashed\n";
+            int cap = capacity;
+            capacity = capacity*2;
+            LinkedList<Node<Key,Value> > *temp;
+            temp = _list;
+            _list = new LinkedList<Node<Key, Value> >[capacity];
+
+            Node_linkedList<Node<Key,Value> > *tempnode;
+            Key key; Value val;
+
+            Node<Key, Value> n;
+
+            for(int i=0; i<cap ; ++i)
+            {
+                tempnode = temp[i].get_head();
+
+                while(tempnode!=NULL)
+                {
+                    key = (tempnode ->data()).get_key();
+                    val = (tempnode ->data()).get_value();
+                    n.set_pair(key,val);
+                    
+                    int index = this->hash(key,capacity);
+                    _list[index].cons(n);
+
+                    tempnode = tempnode->link();
+
+                }
+
+                
+            }
+            
+        }
 
     public:
         void put(const Key& key, const Value& value);
@@ -37,6 +73,7 @@ namespace cs202
         bool has(const Key& key);
         int get_size();
         void print();
+        int get_capacity();
         /*
          * Constructor: ChainedMap
          * Creates a Chained Hash Table with some default size.
@@ -47,7 +84,7 @@ namespace cs202
          * Constructor:ChainedMap
          * Creates an empty Chained Map with the ability to hold atleast num Key value pairs.
          */
-    	//ChainedMap(const int& num);
+    	ChainedMap(const int& num);
         /*
          * Constructor: Chained Map
          * Creates a new Hash Table which is the exact copy of the given hash table.
@@ -72,6 +109,8 @@ namespace cs202
     	Value& operator[](const Key& key);
     };
 
+
+
     template<class Key, class Value>
     ChainedMap<Key, Value>::ChainedMap() {
         _list = new LinkedList< Node<Key, Value> >[SIZE];
@@ -79,9 +118,42 @@ namespace cs202
         capacity = SIZE;
     }
 
+
+
+
+    template<class Key, class Value>
+    ChainedMap<Key, Value>::ChainedMap(const int& num) {
+        _list = new LinkedList< Node<Key, Value> >[num];
+        _size = 0;
+        capacity = num;
+    }
+
+
+
+
     template<class Key, class Value>
     void ChainedMap<Key, Value>::put(const Key& key, const Value& value) {
-        int idx = this -> hash(key, SIZE);
+
+        Node_linkedList< Node<Key, Value> > *temp;
+        int no_of_ele = 0;
+
+        for(int i=0;i<capacity;++i)
+        {
+            no_of_ele = 0;
+            temp = _list[i].get_head();
+            while(temp!=NULL)
+            {
+                no_of_ele++;
+                temp = temp-> link();
+            }
+            if (no_of_ele > capacity/2)
+            {
+              this->rehash();
+            }
+
+        }
+
+        int idx = this -> hash(key, capacity);
         Node<Key, Value> n;
         n.set_pair(key, value);
         Node_linkedList< Node<Key, Value> > *trav;
@@ -97,9 +169,11 @@ namespace cs202
         _size++;
     }
 
+
+
     template<class Key, class Value>
     Value ChainedMap<Key, Value>::get(const Key& key) {
-        int idx = this -> hash(key, SIZE);
+        int idx = this -> hash(key, capacity);
         Node_linkedList< Node<Key, Value> >* trav;
         trav = _list[idx].get_head();
         while(trav != NULL) {
@@ -111,9 +185,11 @@ namespace cs202
         return Value();
     }
 
+
+
     template<class Key, class Value>
     bool ChainedMap<Key, Value>::has(const Key& key) {
-        int idx = this -> hash(key, SIZE);
+        int idx = this -> hash(key, capacity);
         Node_linkedList< Node<Key, Value> >* trav;
         trav = _list[idx].get_head();
         while(trav != NULL) {
@@ -125,10 +201,12 @@ namespace cs202
         return false;
     }
 
+
+
     template<class Key, class Value>
     void ChainedMap<Key, Value>::remove(const Key& key) {
         if(this -> has(key)) {
-            int idx = this -> hash(key, SIZE);
+            int idx = this -> hash(key, capacity);
             Node_linkedList< Node<Key, Value> >* trav;
             trav = _list[idx].get_head();
             if((trav -> data()).get_key() == key) {
@@ -151,12 +229,21 @@ namespace cs202
         return _size;
     }
 
-    
+
+
+    template<class Key, class Value>
+    int ChainedMap<Key, Value>::get_capacity() {
+        return  capacity;
+    }
+
+   
+
+
     template<class Key, class Value>
     void ChainedMap<Key, Value>::print()
     {
         Node_linkedList<Node<Key,Value> > *temp;
-        for(int i=0 ; i<SIZE ; ++i)
+        for(int i=0 ; i<capacity ; ++i)
         {
            temp = _list[i].get_head();
            while(temp!=NULL)

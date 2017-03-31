@@ -63,7 +63,7 @@ class Dictionary
             //     hash = hash * seed + t[i];
             // }
             
-            return (key % size);
+            return (key% size);                                          //change to hash%size if using sstream
           }
 
          int double_hash(int key){
